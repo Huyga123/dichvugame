@@ -23,12 +23,15 @@
             padding-top: 30px;
             min-height: 70px;
             border-bottom: #ffc107 3px solid;
+            transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng */
         }
         header a {
             color: #333;
             text-decoration: none;
             text-transform: uppercase;
             font-size: 16px;
+            transition: color 0.3s ease; /* Hiệu ứng chuyển đổi màu chữ */
         }
         header ul {
             padding: 0;
@@ -42,10 +45,11 @@
             text-align: center;
             margin: 0;
             font-size: 24px;
+            animation: slideIn 0.5s ease; /* Hiệu ứng chữ chạy */
         }
         #showcase {
             min-height: 400px;
-            background: #ffeb3b;
+            background: #ffeb3b url('your-image.jpg') center/cover fixed; /* Hiệu ứng parallax */
             color: #333;
             text-align: center;
             padding-top: 100px;
@@ -64,6 +68,21 @@
             text-align: center;
             padding: 10px;
             margin-top: 20px;
+        }
+
+        /* Hiệu ứng chữ chạy */
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        /* Hover Effect cho các liên kết */
+        header ul li a:hover {
+            color: #ff5722; /* Màu sắc mới */
         }
     </style>
 </head>
