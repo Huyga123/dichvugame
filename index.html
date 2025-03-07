@@ -1,27 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Form</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng 8/3</title>
+    <style>
+        body {
+            background-color: #ffebf0;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #e60073;
+            font-size: 40px;
+            margin-top: 50px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        p {
+            font-size: 20px;
+            color: #333;
+        }
+        .heart {
+            color: red;
+            font-size: 30px;
+            animation: heartbeat 1s infinite;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .button {
+            background-color: #e60073;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background-color: #c4005a;
+        }
+    </style>
 </head>
 <body>
-  <div class="login-container">
-    <form class="login-form" id="loginForm">
-      <h2 class="form-title">Đăng nhập</h2>
-      <div class="input-group">
-        <label for="username">Tên người dùng</label>
-        <input type="text" id="username" placeholder="Tên đăng nhập" required>
-      </div>
-      <div class="input-group">
-        <label for="password">Mật khẩu</label>
-        <input type="password" id="password" placeholder="Nhập mật khẩu" required>
-      </div>
-      <button type="submit" class="submit-btn">Đăng nhập</button>
-      <p class="error-message" id="errorMessage"></p>
-    </form>
-  </div>
-  <script src="script.js"></script>
+    <h1>💐 Chúc Mừng Ngày 8/3! 💐</h1>
+    <p>Chúc một nửa thế giới luôn xinh đẹp, hạnh phúc và thành công! <span class="heart">❤️</span></p>
+    <button class="button" onclick="showMessage()">Nhận Lời Chúc</button>
+
+    <script>
+        function showMessage() {
+            // Danh sách các lời chúc ngẫu nhiên
+            const messages = [
+                "Chúc bạn luôn vui vẻ, mạnh khỏe và đạt được mọi ước mơ!",
+                "Chúc bạn ngày 8/3 tràn đầy yêu thương, hạnh phúc và nhiều niềm vui!",
+                "Hy vọng bạn luôn xinh đẹp, rạng rỡ và thành công trong cuộc sống!",
+                "Chúc bạn mãi là bông hoa tươi thắm, luôn nhận được yêu thương từ mọi người!",
+                "Mong rằng mỗi ngày của bạn đều tuyệt vời như hôm nay!",
+                "Chúc bạn có một ngày 8/3 ý nghĩa, tràn ngập nụ cười và hạnh phúc!",
+                "Chúc bạn lúc nào cũng bình an, may mắn và luôn tỏa sáng!",
+                "Hãy luôn yêu bản thân và tận hưởng từng khoảnh khắc tuyệt vời nhé!",
+                "Chúc bạn một ngày 8/3 với nhiều niềm vui và tràn đầy năng lượng!",
+                "Mỗi ngày đều là ngày đặc biệt với bạn, hãy luôn hạnh phúc nhé!"
+            ];
+
+            // Lấy ngẫu nhiên một lời chúc
+            let randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+            // Hiển thị lời chúc
+            alert(randomMessage);
+        }
+    </script>
 </body>
 </html>
