@@ -1,84 +1,183 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc Mừng 8/3</title>
-    <style>
-        body {
-            background-color: #ffebf0;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            color: #e60073;
-            font-size: 40px;
-            margin-top: 50px;
-            animation: fadeIn 2s ease-in-out;
-        }
-        p {
-            font-size: 20px;
-            color: #333;
-        }
-        .heart {
-            color: red;
-            font-size: 30px;
-            animation: heartbeat 1s infinite;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-        .button {
-            background-color: #e60073;
-            color: white;
-            padding: 15px 30px;
-            font-size: 18px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 20px;
-            transition: background 0.3s;
-        }
-        .button:hover {
-            background-color: #c4005a;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Quản Lý Tồn Kho - Đăng Nhập</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f0fff4;
+      color: #2f855a;
+    }
+    .login-container {
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-box {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(72, 187, 120, 0.3);
+    }
+    .login-box h2 {
+      margin-bottom: 20px;
+      color: #2f855a;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #c6f6d5;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      background-color: #38a169;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .login-box button:hover {
+      background-color: #2f855a;
+    }
+    #appContent { display: none; padding: 20px; }
+  </style>
 </head>
 <body>
-    <h1>💐 Chúc Mừng Ngày 8/3! 💐</h1>
-    <p>Chúc một nửa thế giới luôn xinh đẹp, hạnh phúc và thành công! <span class="heart">❤️</span></p>
-    <button class="button" onclick="showMessage()">Nhận Lời Chúc</button>
+<div class="login-container" id="loginForm">
+  <div class="login-box">
+    <h2>Đăng Nhập</h2>
+    <input type="text" id="username" placeholder="Tên đăng nhập">
+    <input type="password" id="password" placeholder="Mật khẩu">
+    <button onclick="login()">Đăng nhập</button>
+    <p id="errorMsg" style="color:red; text-align:center;"></p>
+  </div>
+</div>
 
-    <script>
-        function showMessage() {
-            // Danh sách các lời chúc ngẫu nhiên
-            const messages = [
-                "Chúc bạn luôn vui vẻ, mạnh khỏe và đạt được mọi ước mơ!",
-                "Chúc bạn ngày 8/3 tràn đầy yêu thương, hạnh phúc và nhiều niềm vui!",
-                "Hy vọng bạn luôn xinh đẹp, rạng rỡ và thành công trong cuộc sống!",
-                "Chúc bạn mãi là bông hoa tươi thắm, luôn nhận được yêu thương từ mọi người!",
-                "Mong rằng mỗi ngày của bạn đều tuyệt vời như hôm nay!",
-                "Chúc bạn có một ngày 8/3 ý nghĩa, tràn ngập nụ cười và hạnh phúc!",
-                "Chúc bạn lúc nào cũng bình an, may mắn và luôn tỏa sáng!",
-                "Hãy luôn yêu bản thân và tận hưởng từng khoảnh khắc tuyệt vời nhé!",
-                "Chúc bạn một ngày 8/3 với nhiều niềm vui và tràn đầy năng lượng!",
-                "Mỗi ngày đều là ngày đặc biệt với bạn, hãy luôn hạnh phúc nhé!"
-            ];
+<div id="appContent">
+  <!-- Nội dung app được giữ nguyên từ đây -->
+  <h2>Quản Lý Hàng Tồn</h2>
+  <table id="productTable">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tên Sản Phẩm</th>
+        <th>Đơn Vị</th>
+        <th>Tồn Đầu</th>
+        <th>Nhập</th>
+        <th>Xuất</th>
+        <th>Tồn Cuối</th>
+        <th>Hành Động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><input type="text" value="Bầu baby"></td>
+        <td><input type="text" value="Kg"></td>
+        <td><input type="number" value="5"></td>
+        <td><input type="number" value="0"></td>
+        <td><input type="number" value="0"></td>
+        <td class="tonCuoi"></td>
+        <td><button onclick="removeRow(this)">Xóa</button></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><input type="text" value="Bí đỏ"></td>
+        <td><input type="text" value="Kg"></td>
+        <td><input type="number" value="3"></td>
+        <td><input type="number" value="0.6"></td>
+        <td><input type="number" value="2.4"></td>
+        <td class="tonCuoi"></td>
+        <td><button onclick="removeRow(this)">Xóa</button></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><input type="text" value="Bí xanh"></td>
+        <td><input type="text" value="Kg"></td>
+        <td><input type="number" value="0.8"></td>
+        <td><input type="number" value="0.7"></td>
+        <td><input type="number" value="0.3"></td>
+        <td class="tonCuoi"></td>
+        <td><button onclick="removeRow(this)">Xóa</button></td>
+      </tr>
+    </tbody>
+  </table>
 
-            // Lấy ngẫu nhiên một lời chúc
-            let randomMessage = messages[Math.floor(Math.random() * messages.length)];
+  <div style="text-align: center;">
+    <button onclick="addRow()">Thêm Sản Phẩm</button>
+    <button onclick="calculate()">Tính Tồn Cuối</button>
+    <button onclick="exportToExcel()">Xuất Excel</button>
+  </div>
+</div>
 
-            // Hiển thị lời chúc
-            alert(randomMessage);
-        }
-    </script>
+<script>
+  function login() {
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+    const error = document.getElementById("errorMsg");
+    if (user === "nguyenquochuy" && pass === "huy22022005") {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("appContent").style.display = "block";
+    } else {
+      error.textContent = "Sai tài khoản hoặc mật khẩu!";
+    }
+  }
+
+  function calculate() {
+    const rows = document.querySelectorAll("#productTable tbody tr");
+    rows.forEach(row => {
+      const tonDau = parseFloat(row.cells[3].children[0].value) || 0;
+      const nhap = parseFloat(row.cells[4].children[0].value) || 0;
+      const xuat = parseFloat(row.cells[5].children[0].value) || 0;
+      const tonCuoi = tonDau + nhap - xuat;
+      row.querySelector(".tonCuoi").textContent = tonCuoi.toFixed(2);
+    });
+  }
+
+  function addRow() {
+    const table = document.querySelector("#productTable tbody");
+    const newRow = table.insertRow();
+    const rowCount = table.rows.length;
+    newRow.innerHTML = `
+      <td>${rowCount}</td>
+      <td><input type="text"></td>
+      <td><input type="text"></td>
+      <td><input type="number" value="0"></td>
+      <td><input type="number" value="0"></td>
+      <td><input type="number" value="0"></td>
+      <td class="tonCuoi"></td>
+      <td><button onclick="removeRow(this)">Xóa</button></td>
+    `;
+    newRow.querySelectorAll("input").forEach(input => {
+      input.addEventListener("input", calculate);
+    });
+  }
+
+  function removeRow(button) {
+    const row = button.closest("tr");
+    row.remove();
+    updateSTT();
+  }
+
+  function updateSTT() {
+    const rows = document.querySelectorAll("#productTable tbody tr");
+    rows.forEach((row, index) => {
+      row.cells[0].textContent = index + 1;
+    });
+  }
+
+  function exportToExcel() {
+    const table = document.getElementById("productTable");
+    const wb = XLSX.utils.table_to_book(table, {sheet: "Tồn Kho"});
+    XLSX.writeFile(wb, "ton_kho.xlsx");
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </body>
 </html>
