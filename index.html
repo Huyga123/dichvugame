@@ -2,182 +2,196 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Quản Lý Tồn Kho - Đăng Nhập</title>
+  <title>Quản lý khoản vay</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial;
+      background-color: #f2f2f2;
       margin: 0;
-      background-color: #f0fff4;
-      color: #2f855a;
+      padding: 0;
     }
-    .login-container {
-      display: flex;
-      height: 100vh;
-      justify-content: center;
-      align-items: center;
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
-    .login-box {
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(72, 187, 120, 0.3);
-    }
-    .login-box h2 {
-      margin-bottom: 20px;
-      color: #2f855a;
-    }
-    .login-box input {
+
+    input[type="number"], input[type="text"], input[type="password"] {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #c6f6d5;
+      box-sizing: border-box;
     }
-    .login-box button {
-      width: 100%;
-      padding: 10px;
-      background-color: #38a169;
-      color: white;
-      border: none;
-      border-radius: 5px;
+
+    button {
+      padding: 10px 15px;
+      margin: 10px 0;
       cursor: pointer;
     }
-    .login-box button:hover {
-      background-color: #2f855a;
+
+    table, th, td {
+      border: 1px solid #333;
+      border-collapse: collapse;
+      padding: 10px;
+      text-align: center;
     }
-    #appContent { display: none; padding: 20px; }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .extra-input {
+      width: 120px !important;
+      padding: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    #loanSection {
+      display: none;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .success {
+      color: green;
+    }
   </style>
 </head>
 <body>
-<div class="login-container" id="loginForm">
-  <div class="login-box">
-    <h2>Đăng Nhập</h2>
-    <input type="text" id="username" placeholder="Tên đăng nhập">
+
+<div class="container">
+  <!-- Đăng nhập -->
+  <div id="loginSection">
+    <h2>Đăng nhập</h2>
+    <input type="text" id="username" placeholder="Tên tài khoản">
     <input type="password" id="password" placeholder="Mật khẩu">
     <button onclick="login()">Đăng nhập</button>
-    <p id="errorMsg" style="color:red; text-align:center;"></p>
+    <p id="loginMessage"></p>
   </div>
-</div>
 
-<div id="appContent">
-  <!-- Nội dung app được giữ nguyên từ đây -->
-  <h2>Quản Lý Hàng Tồn</h2>
-  <table id="productTable">
-    <thead>
-      <tr>
-        <th>STT</th>
-        <th>Tên Sản Phẩm</th>
-        <th>Đơn Vị</th>
-        <th>Tồn Đầu</th>
-        <th>Nhập</th>
-        <th>Xuất</th>
-        <th>Tồn Cuối</th>
-        <th>Hành Động</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td><input type="text" value="Bầu baby"></td>
-        <td><input type="text" value="Kg"></td>
-        <td><input type="number" value="5"></td>
-        <td><input type="number" value="0"></td>
-        <td><input type="number" value="0"></td>
-        <td class="tonCuoi"></td>
-        <td><button onclick="removeRow(this)">Xóa</button></td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td><input type="text" value="Bí đỏ"></td>
-        <td><input type="text" value="Kg"></td>
-        <td><input type="number" value="3"></td>
-        <td><input type="number" value="0.6"></td>
-        <td><input type="number" value="2.4"></td>
-        <td class="tonCuoi"></td>
-        <td><button onclick="removeRow(this)">Xóa</button></td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td><input type="text" value="Bí xanh"></td>
-        <td><input type="text" value="Kg"></td>
-        <td><input type="number" value="0.8"></td>
-        <td><input type="number" value="0.7"></td>
-        <td><input type="number" value="0.3"></td>
-        <td class="tonCuoi"></td>
-        <td><button onclick="removeRow(this)">Xóa</button></td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Quản lý khoản vay -->
+  <div id="loanSection">
+    <h2>Nguyễn Quốc Huy</h2>
 
-  <div style="text-align: center;">
-    <button onclick="addRow()">Thêm Sản Phẩm</button>
-    <button onclick="calculate()">Tính Tồn Cuối</button>
-    <button onclick="exportToExcel()">Xuất Excel</button>
+    <label>Tổng số tiền nợ ban đầu:</label>
+    <input type="number" id="totalDebt" value="100000000">
+
+    <label>Số tiền trả hàng tháng:</label>
+    <input type="number" id="monthlyPayment" value="5000000">
+
+    <button onclick="generateTable()">Tạo bảng thanh toán</button>
+
+    <table id="loanTable">
+      <thead>
+        <tr>
+          <th>Tháng</th>
+          <th>Số tiền trả hàng tháng</th>
+          <th>Trả thêm (tùy ý)</th>
+          <th>Tổng số nợ còn lại</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button onclick="exportToExcel()">Xuất sang Excel</button>
   </div>
 </div>
 
 <script>
+  const validUsername = "nguyenquochuy";
+  const validPassword = "Huyga@098733";
+
   function login() {
-    const user = document.getElementById("username").value;
+    const user = document.getElementById("username").value.trim();
     const pass = document.getElementById("password").value;
-    const error = document.getElementById("errorMsg");
-    if (user === "nguyenquochuy" && pass === "huy22022005") {
-      document.getElementById("loginForm").style.display = "none";
-      document.getElementById("appContent").style.display = "block";
+    const message = document.getElementById("loginMessage");
+
+    if (user === validUsername && pass === validPassword) {
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("loanSection").style.display = "block";
     } else {
-      error.textContent = "Sai tài khoản hoặc mật khẩu!";
+      message.innerHTML = "<span class='error'>Sai tài khoản hoặc mật khẩu.</span>";
     }
   }
 
-  function calculate() {
-    const rows = document.querySelectorAll("#productTable tbody tr");
-    rows.forEach(row => {
-      const tonDau = parseFloat(row.cells[3].children[0].value) || 0;
-      const nhap = parseFloat(row.cells[4].children[0].value) || 0;
-      const xuat = parseFloat(row.cells[5].children[0].value) || 0;
-      const tonCuoi = tonDau + nhap - xuat;
-      row.querySelector(".tonCuoi").textContent = tonCuoi.toFixed(2);
-    });
+  function generateTable() {
+    const totalDebt = parseFloat(document.getElementById('totalDebt').value);
+    const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value);
+    const tbody = document.getElementById('loanTable').querySelector('tbody');
+    tbody.innerHTML = '';
+
+    let remaining = totalDebt;
+    let month = 1;
+
+    while (remaining > 0 && month <= 120) {
+      const row = document.createElement('tr');
+
+      // Tháng
+      const cellMonth = document.createElement('td');
+      cellMonth.textContent = month;
+      row.appendChild(cellMonth);
+
+      // Số tiền trả hàng tháng
+      const cellPayment = document.createElement('td');
+      cellPayment.textContent = monthlyPayment;
+      row.appendChild(cellPayment);
+
+      // Trả thêm (ô rộng)
+      const cellExtra = document.createElement('td');
+      const inputExtra = document.createElement('input');
+      inputExtra.type = 'number';
+      inputExtra.className = 'extra-input';
+      inputExtra.min = '0';
+      inputExtra.value = 0;
+      inputExtra.addEventListener('input', updateRemaining);
+      cellExtra.appendChild(inputExtra);
+      row.appendChild(cellExtra);
+
+      // Tổng nợ còn lại
+      const cellRemaining = document.createElement('td');
+      cellRemaining.textContent = remaining;
+      row.appendChild(cellRemaining);
+
+      tbody.appendChild(row);
+      remaining -= monthlyPayment;
+      month++;
+    }
+
+    updateRemaining();
   }
 
-  function addRow() {
-    const table = document.querySelector("#productTable tbody");
-    const newRow = table.insertRow();
-    const rowCount = table.rows.length;
-    newRow.innerHTML = `
-      <td>${rowCount}</td>
-      <td><input type="text"></td>
-      <td><input type="text"></td>
-      <td><input type="number" value="0"></td>
-      <td><input type="number" value="0"></td>
-      <td><input type="number" value="0"></td>
-      <td class="tonCuoi"></td>
-      <td><button onclick="removeRow(this)">Xóa</button></td>
-    `;
-    newRow.querySelectorAll("input").forEach(input => {
-      input.addEventListener("input", calculate);
-    });
-  }
+  function updateRemaining() {
+    const totalDebt = parseFloat(document.getElementById('totalDebt').value);
+    const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value);
+    const tbody = document.getElementById('loanTable').querySelector('tbody');
 
-  function removeRow(button) {
-    const row = button.closest("tr");
-    row.remove();
-    updateSTT();
-  }
+    let remaining = totalDebt;
 
-  function updateSTT() {
-    const rows = document.querySelectorAll("#productTable tbody tr");
-    rows.forEach((row, index) => {
-      row.cells[0].textContent = index + 1;
+    Array.from(tbody.rows).forEach((row) => {
+      const input = row.cells[2].querySelector('input');
+      const val = input.value;
+      const extra = isNaN(parseFloat(val)) ? 0 : parseFloat(val);
+      const paid = monthlyPayment + extra;
+      remaining = Math.max(0, remaining - paid);
+      row.cells[3].textContent = remaining;
     });
   }
 
   function exportToExcel() {
-    const table = document.getElementById("productTable");
-    const wb = XLSX.utils.table_to_book(table, {sheet: "Tồn Kho"});
-    XLSX.writeFile(wb, "ton_kho.xlsx");
+    const table = document.getElementById("loanTable");
+    const wb = XLSX.utils.table_to_book(table, { sheet: "KhoanVay" });
+    XLSX.writeFile(wb, "khoan_vay.xlsx");
   }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 </body>
 </html>
