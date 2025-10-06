@@ -1,197 +1,109 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Nguyễn Quốc Huy</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Đăng nhập</title>
   <style>
     body {
-      font-family: Arial;
-      background-color: #f2f2f2;
       margin: 0;
-      padding: 0;
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffe6ec, #fff6f9);
+      overflow: hidden;
     }
-
-    .container {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-
-    input[type="number"], input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      box-sizing: border-box;
-    }
-
-    button {
-      padding: 10px 15px;
-      margin: 10px 0;
-      cursor: pointer;
-    }
-
-    table, th, td {
-      border: 1px solid #333;
-      border-collapse: collapse;
-      padding: 10px;
+    .login-box {
+      background: #fff;
+      padding: 40px 50px;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(255, 105, 135, 0.2);
       text-align: center;
+      transition: transform 0.4s ease;
     }
-
-    table {
+    .login-box:hover {
+      transform: scale(1.03);
+    }
+    h2 {
+      color: #e84a5f;
+      margin-bottom: 25px;
+    }
+    input {
       width: 100%;
-      margin-top: 20px;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ffd1dc;
+      border-radius: 8px;
+      outline: none;
+      font-size: 15px;
     }
-
-    .extra-input {
-      width: 120px !important;
-      padding: 6px;
+    input:focus {
+      border-color: #ff9abf;
+      box-shadow: 0 0 5px rgba(255, 155, 180, 0.4);
+    }
+    button {
+      background: #e84a5f;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #ff6b81;
+    }
+    .error {
+      color: #e84a5f;
+      margin-top: 10px;
       font-size: 14px;
-      box-sizing: border-box;
-    }
-
-    #loanSection {
       display: none;
     }
-
-    .error {
-      color: red;
+    .note {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #888;
+      font-style: italic;
     }
-
-    .success {
-      color: green;
+    .note span {
+      color: #e84a5f;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
-
-<div class="container">
-  <!-- Đăng nhập -->
-  <div id="loginSection">
+  <div class="login-box">
     <h2>Đăng nhập</h2>
-    <input type="text" id="username" placeholder="Tên tài khoản">
-    <input type="password" id="password" placeholder="Mật khẩu">
+    <input type="text" id="username" placeholder="Tên đăng nhập" />
+    <input type="password" id="password" placeholder="Mật khẩu" />
     <button onclick="login()">Đăng nhập</button>
-    <p id="loginMessage"></p>
+    <div class="error" id="error-msg">Sai thông tin đăng nhập!</div>
+    <div class="note">
+      Tên đăng: <span>fb</span><br />
+      Mật khẩu: <span>ngaysinh</span> (ví dụ: <span>2202</span>)
+    </div>
   </div>
 
-  <!-- Quản lý khoản vay -->
-  <div id="loanSection">
-    <h2>Quản lý khoản vay</h2>
+  <script>
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      const errorMsg = document.getElementById("error-msg");
 
-    <label>Tổng số tiền nợ ban đầu:</label>
-    <input type="number" id="totalDebt" value="100000000">
-
-    <label>Số tiền trả hàng tháng:</label>
-    <input type="number" id="monthlyPayment" value="5000000">
-
-    <button onclick="generateTable()">Tạo bảng thanh toán</button>
-
-    <table id="loanTable">
-      <thead>
-        <tr>
-          <th>Tháng</th>
-          <th>Số tiền trả hàng tháng</th>
-          <th>Trả thêm (tùy ý)</th>
-          <th>Tổng số nợ còn lại</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <button onclick="exportToExcel()">Xuất sang Excel</button>
-  </div>
-</div>
-
-<script>
-  const validUsername = "nguyenquochuy";
-  const validPassword = "Huyga@098733";
-
-  function login() {
-    const user = document.getElementById("username").value.trim();
-    const pass = document.getElementById("password").value;
-    const message = document.getElementById("loginMessage");
-
-    if (user === validUsername && pass === validPassword) {
-      document.getElementById("loginSection").style.display = "none";
-      document.getElementById("loanSection").style.display = "block";
-    } else {
-      message.innerHTML = "<span class='error'>Sai tài khoản hoặc mật khẩu.</span>";
+      if (user === "Nguyễn Hoàng Lan Anh" && pass === "2607") {
+        document.querySelector(".login-box").style.opacity = "0";
+        setTimeout(() => {
+          window.location.href = "love.html";
+        }, 800);
+      } else {
+        errorMsg.style.display = "block";
+      }
     }
-  }
-
-  function generateTable() {
-    const totalDebt = parseFloat(document.getElementById('totalDebt').value);
-    const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value);
-    const tbody = document.getElementById('loanTable').querySelector('tbody');
-    tbody.innerHTML = '';
-
-    let remaining = totalDebt;
-    let month = 1;
-
-    while (remaining > 0 && month <= 120) {
-      const row = document.createElement('tr');
-
-      // Tháng
-      const cellMonth = document.createElement('td');
-      cellMonth.textContent = month;
-      row.appendChild(cellMonth);
-
-      // Số tiền trả hàng tháng
-      const cellPayment = document.createElement('td');
-      cellPayment.textContent = monthlyPayment;
-      row.appendChild(cellPayment);
-
-      // Trả thêm (ô rộng)
-      const cellExtra = document.createElement('td');
-      const inputExtra = document.createElement('input');
-      inputExtra.type = 'number';
-      inputExtra.className = 'extra-input';
-      inputExtra.min = '0';
-      inputExtra.value = 0;
-      inputExtra.addEventListener('input', updateRemaining);
-      cellExtra.appendChild(inputExtra);
-      row.appendChild(cellExtra);
-
-      // Tổng nợ còn lại
-      const cellRemaining = document.createElement('td');
-      cellRemaining.textContent = remaining;
-      row.appendChild(cellRemaining);
-
-      tbody.appendChild(row);
-      remaining -= monthlyPayment;
-      month++;
-    }
-
-    updateRemaining();
-  }
-
-  function updateRemaining() {
-    const totalDebt = parseFloat(document.getElementById('totalDebt').value);
-    const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value);
-    const tbody = document.getElementById('loanTable').querySelector('tbody');
-
-    let remaining = totalDebt;
-
-    Array.from(tbody.rows).forEach((row) => {
-      const input = row.cells[2].querySelector('input');
-      const val = input.value;
-      const extra = isNaN(parseFloat(val)) ? 0 : parseFloat(val);
-      const paid = monthlyPayment + extra;
-      remaining = Math.max(0, remaining - paid);
-      row.cells[3].textContent = remaining;
-    });
-  }
-
-  function exportToExcel() {
-    const table = document.getElementById("loanTable");
-    const wb = XLSX.utils.table_to_book(table, { sheet: "KhoanVay" });
-    XLSX.writeFile(wb, "khoan_vay.xlsx");
-  }
-</script>
-
+  </script>
 </body>
 </html>
